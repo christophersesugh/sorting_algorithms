@@ -8,12 +8,12 @@
  */
 void bubble_sort(int *array, size_t size)
 {
-	int pass, i, temp, swapped;
+	int i, j, temp, swapped;
 
 	swapped = 1;
-	for (pass = size - 1; pass >= 0 && swapped; pass--)
+	for (i = 0; i <= size - 1 && swapped; i++)
 	{
-		for (i = 0; i <= pass - 1; i++)
+		for (j = 0; i <= size - i - 1; i++)
 		{
 			swapped = 0;
 			if (array[i] > array[i + 1])
