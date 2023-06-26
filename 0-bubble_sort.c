@@ -8,8 +8,7 @@
  */
 void bubble_sort(int *array, size_t size)
 {
-	int i, j, temp, swapped, count;
-	size_t k;
+	int i, j, temp, swapped;
 
 	if (array == NULL || size <= 0)
 		exit(EXIT_FAILURE);
