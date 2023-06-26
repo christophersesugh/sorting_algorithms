@@ -1,48 +1,73 @@
 #include "sort.h"
 
 /**
- * lomutoPartition - function to perform partition using lomuto scheme
- * @array: array to be partitioned
- * @low: lower partition
- * @high: high partition
- * Return: int
+ * swap_items - Swaps two items in an array.
+ * @array: The array to modify.
+ * @l: The index of the left item.
+ * @r: The index of the right item.
  */
-int lomutoPartition(int *array, int low, int high)
+void swap_items(int *array, size_t l, size_t r)
 {
-	int i, j, pivot;
+	int tmp;
 
-	pivot = array[high];
-	i = low - 1;
-	
-	for (j = low; j <= high - 1; j++)
+	if (array != NULL)
 	{
-		if (array[j] <= pivot)
-		{
-			i++;
-			swap(&array[i], &array[j]);
-		}
+		tmp = array[l];
+		array[l] = array[r];
+		array[r] = tmp;
 	}
-	swap(&array[i + 1], &array[high]);
-	return (i + 1);
 }
 
 /**
- * quick_sort - implements the quick sort algorithm
- * @array: array to be sorted
- * @size: size of the array
- * Return: nothing
+ * quick_sort_range_lomuto - Sorts a sub array using the
+ * quick sort algorithm and Lomuto's partition scheme.
+ * @array: The array containing the sub-array.
+ * @low: The starting position of the sub-array.
+ * @high: The ending position of the sub-array.
+ * @size: The length of the array.
+ */
+void quick_sort_range_lomuto(int *array, size_t low, size_t high, size_t size)
+{
+	size_t k, i;
+	int pivot;
+
+	if ((low >= high) || (array == NULL))
+		return;
+	pivot = array[high];
+	k = low;
+	for (i = low; i < high; i++)
+	{
+		if (array[i] <= pivot)
+		{
+			if (k != i)
+			{
+				swap_items(array, k, i);
+				print_array(array, size);
+			}
+			k++;
+		}
+	}
+	if (k != high)
+	{
+		swap_items(array, k, high);
+		print_array(array, size);
+	}
+	if (k - low > 1)
+		quick_sort_range_lomuto(array, low, k - 1, size);
+	if (high - k > 1)
+		quick_sort_range_lomuto(array, k + 1, high, size);
+}
+
+/**
+ * quick_sort - Sorts an array using the quick sort algorithm
+ * and Lomuto's partition scheme.
+ * @array: The array to sort.
+ * @size: The length of the array.
  */
 void quick_sort(int *array, size_t size)
 {
-	int low, high, pivot_index;
-
-	if (array == NULL || size <= 0)
-		exit(EXIT_FAILURE);
-
-	low = 0;
-	high = size - 1;
-	pivot_index = lomutoPartition(array, high, low);
-
-	quick_sort(array, pivot_index);
-	quick_sort(array + pivot_index + 1, size - pivot_index - 1);
+	if (array != NULL)
+	{
+		quick_sort_range_lomuto(array, 0, size - 1, size);
+	}
 }
